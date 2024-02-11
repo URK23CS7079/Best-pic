@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Pick</title>
+</head>
+<body>
+    <h1>Welcome to Best Pick</h1>
+    <form id="movieForm" action="/recommend" method="post">
+        <label for="movie_input">Enter your favorite movie:</label>
+        <input type="text" id="movie_input" name="movie_input" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    <div id="recommendations">
+        <!-- Recommendations will be displayed here -->
+    </div>
+
+    <script>
+        document.getElementById('movieForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Fetch recommendations using AJAX
+            const userInput = document.getElementById('movie_input').value;
+            const formData = new FormData();
+            formData.append('movie_input', userInput);
+
+            fetch('/recommend', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('recommendations').innerHTML = html;
+            });
+        });
+    </script>
+</body>
+</html>
